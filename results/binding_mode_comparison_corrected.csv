@@ -1,0 +1,6 @@
+Metric,Value,Unit
+Heavy_RMSD_Corrected,7.601780387093259,Å
+Light_RMSD_Corrected,7.762182102496705,Å
+Combined_RMSD_Corrected,7.7328153954828185,Å
+Binding_Angle_Corrected,76.29522165055991,°
+Superposition_Residues,30,residues

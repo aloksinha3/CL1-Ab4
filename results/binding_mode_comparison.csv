@@ -1,0 +1,9 @@
+Metric,Value,Unit
+Heavy_RMSD,17.889971827814595,Å
+Light_RMSD,21.778590896303907,Å
+Binding_Angle,57.96276065127248,°
+Ab_Interface_Size,23,residues
+p53_Epitope_Size,30,residues
+CALR_Epitope_Size,20,residues
+p53_Epitope_Rg,10.580262738861135,Å
+CALR_Epitope_Rg,9.324324159288972,Å

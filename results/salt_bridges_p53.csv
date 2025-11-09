@@ -1,0 +1,5 @@
+AbChain,AbResi,AbIcode,AbResn,AbAtom,AgChain,AgResi,AgIcode,AgResn,AgAtom,Distance
+B,36,,LYS,CE,C,111,,GLU,CD,3.712
+B,36,,LYS,CE,C,111,,GLU,OE1,3.415
+B,36,,LYS,CE,C,111,,GLU,OE2,3.882
+B,36,,LYS,NZ,C,111,,GLU,OE1,3.701
