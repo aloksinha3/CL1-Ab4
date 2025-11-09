@@ -3,8 +3,7 @@
 ## Overview
 
 **Antibody:** CL1-Ab4  
-**Antigens:** p53 and CALR (structurally unrelated proteins)  
-**Question:** Why is CL1-Ab4 polyreactive?  
+**Antigens:** p53 and CALR
 **Analysis Date:** October 7, 2025
 
 ---
@@ -14,167 +13,122 @@
 ### Structure Generation
 
 Structures of the CL1-Ab4 CALR P domain interface and the CL1-Ab4 p53 core domain were generated using AlphaFold3. The antibody-antigen complexes were modeled with the following chain designations:
-- Chain A: Heavy chain of CL1-Ab4
-- Chain B: Light chain of CL1-Ab4  
-- Chain C: Antigen (p53 core domain or CALR P domain)
+Chain A: Heavy chain of CL1-Ab4
+Chain B: Light chain of CL1-Ab4  
+Chain C: Antigen (p53 core domain or CALR P domain)
 
 ### Computational Analysis Pipeline
 
-#### 1. Contact Analysis and Interface Mapping
-
 **Contact Detection:**
-- Heavy-atom contacts were computed using a custom Python script (`compute_contacts.py`) with a 5.0 Å cutoff
-- Contacts between antibody chains (A+B) and antigen chain (C) were identified
-- Conserved interface residues were defined as those contacting both p53 and CALR within 5 Å
+Heavy-atom contacts were computed using a custom Python script (`compute_contacts.py`) with a 5.0 Å cutoff
+Contacts between antibody chains (A+B) and antigen chain (C) were identified
+Conserved interface residues were defined as those contacting both p53 and CALR within 5 Å
 
 **Interface Residue Identification:**
-- 23 antibody residues were identified as conserved interface residues:
-  - Heavy chain (A): 16 residues (positions 31, 32, 33, 50, 52, 55, 57, 59, 99, 102, 103, 104, 105, 106, 107, 109)
-  - Light chain (B): 7 residues (positions 2, 27, 31, 98, 99, 100, 102)
-
-#### 2. Interaction Analysis
+23 antibody residues were identified as conserved interface residues:
+Heavy chain (A): 16 residues (positions 31, 32, 33, 50, 52, 55, 57, 59, 99, 102, 103, 104, 105, 106, 107, 109)
+Light chain (B): 7 residues (positions 2, 27, 31, 98, 99, 100, 102)
 
 **Hydrogen Bond Detection:**
-- Hydrogen bonds were identified using geometric criteria: donor-acceptor distance ≤ 3.5 Å and donor-H-acceptor angle ≥ 120°
-- Backbone and side-chain hydrogen bonds were analyzed separately
-- Results saved to `hbonds_p53.csv` and `hbonds_calr.csv`
+Hydrogen bonds were identified using geometric criteria: donor-acceptor distance ≤ 3.5 Å and donor-H-acceptor angle ≥ 120°
+Backbone and side-chain hydrogen bonds were analyzed separately
+Results saved to `hbonds_p53.csv` and `hbonds_calr.csv`
 
 **Salt Bridge Analysis:**
-- Salt bridges were defined as interactions between oppositely charged residues (Arg/Lys ↔ Asp/Glu) within 4.0 Å
-- Results saved to `salt_bridges_p53.csv` and `salt_bridges_calr.csv`
+Salt bridges were defined as interactions between oppositely charged residues (Arg/Lys ↔ Asp/Glu) within 4.0 Å
+Results saved to `salt_bridges_p53.csv` and `salt_bridges_calr.csv`
 
 **Hydrophobic Contact Analysis:**
-- Hydrophobic contacts were identified between nonpolar residues (Ala, Val, Ile, Leu, Met, Phe, Trp, Tyr) within 4.5 Å
-- Results saved to `hydrophobic_contacts_p53.csv` and `hydrophobic_contacts_calr.csv`
-
-#### 3. Energetic Analysis (FoldX 4.1)
+Hydrophobic contacts were identified between nonpolar residues (Ala, Val, Ile, Leu, Met, Phe, Trp, Tyr) within 4.5 Å
+Results saved to `hydrophobic_contacts_p53.csv` and `hydrophobic_contacts_calr.csv`
 
 **Alanine Scanning:**
-- FoldX AlaScan command was used to compute ΔΔG values for alanine mutations
-- 26 interface residues were scanned across both complexes
-- 5 independent runs were performed for statistical robustness
-- ΔΔG values were extracted from `*_AS.fxout` output files using `parse_alascan.py`
-- Results compiled in `foldx_ddg_analysis.csv`
+FoldX AlaScan command was used to compute ΔΔG values for alanine mutations
+26 interface residues were scanned across both complexes
+5 independent runs were performed for statistical robustness
+ΔΔG values were extracted from `*_AS.fxout` output files using `parse_alascan.py`
+Results compiled in `foldx_ddg_analysis.csv`
 
 **Energy Decomposition:**
-- Conserved hotspots were defined as residues with ΔΔG > 1.0 kcal/mol and <2.0 kcal/mol difference between complexes
-- Differential residues were defined as those with ΔΔG difference > 2.0 kcal/mol between antigens
-
-#### 4. Flexibility Analysis (B-factor Analysis)
+Conserved hotspots were defined as residues with ΔΔG > 1.0 kcal/mol and <2.0 kcal/mol difference between complexes
+Differential residues were defined as those with ΔΔG difference > 2.0 kcal/mol between antigens
 
 **B-factor Extraction:**
-- B-factors were extracted from ATOM records (columns 60-66) of both PDB structures using `analyze_flexibility.py`
-- Average B-factors were calculated per residue across all atoms
-- Flexibility classification:
-  - High flexibility: B-factor > 50 Ų
-  - Medium flexibility: B-factor 30-50 Ų
-  - Low flexibility: B-factor < 30 Ų
-- Results saved to `bfactors_p53.csv` and `bfactors_calr.csv`
-
-#### 5. Chemical Composition Analysis
+B-factors were extracted from ATOM records (columns 60-66) of both PDB structures using `analyze_flexibility.py`
+Average B-factors were calculated per residue across all atoms
+Flexibility classification:
+High flexibility: B-factor > 50 Ų
+Medium flexibility: B-factor 30-50 Ų
+Low flexibility: B-factor < 30 Ų
+Results saved to `bfactors_p53.csv` and `bfactors_calr.csv`
 
 **Residue Classification:**
-- Hydrophobic: Ala, Val, Ile, Leu, Met, Phe, Trp, Tyr
-- Aromatic: Phe, Tyr, Trp, His
-- Basic: Arg, Lys, His
-- Acidic: Asp, Glu
-- Polar: Ser, Thr, Asn, Gln, Cys
+Hydrophobic: Ala, Val, Ile, Leu, Met, Phe, Trp, Tyr
+Aromatic: Phe, Tyr, Trp, His
+Basic: Arg, Lys, His
+Acidic: Asp, Glu
+Polar: Ser, Thr, Asn, Gln, Cys
 
 **Enrichment Analysis:**
-- Chemical composition was calculated for conserved interface residues using `compute_paratope_chemistry.py`
-- Percentages were compared to typical polyreactive antibody thresholds (>25% aromatic, >50% hydrophobic)
-- Results saved to `paratope_chemistry_map.csv`
-
-#### 6. Structural Superposition and Binding Mode Analysis
+Chemical composition was calculated for conserved interface residues using `compute_paratope_chemistry.py`
+Percentages were compared to typical polyreactive antibody thresholds (>25% aromatic, >50% hydrophobic)
+Results saved to `paratope_chemistry_map.csv`
 
 **Antibody Alignment:**
-- Kabsch superposition algorithm was applied using `corrected_binding_analysis.py`
-- Alignment was performed using conserved interface residues (30 residues total)
-- Rotation matrix and translation vector were computed using singular value decomposition (SciPy)
+Kabsch superposition algorithm was applied using `corrected_binding_analysis.py`
+Alignment was performed using conserved interface residues (30 residues total)
+Rotation matrix and translation vector were computed using singular value decomposition (SciPy)
 
 **RMSD Calculation:**
-- Root mean square deviation was calculated for conserved interface residues after superposition
-- Heavy chain, light chain, and combined RMSDs were computed separately
-- Results saved to `binding_mode_comparison_corrected.csv`
+Root mean square deviation was calculated for conserved interface residues after superposition
+Heavy chain, light chain, and combined RMSDs were computed separately
+Results saved to `binding_mode_comparison_corrected.csv`
 
 **Binding Orientation Analysis:**
-- Binding orientation vectors were calculated as centroids of interface residues
-- Angle between binding orientations was computed using dot product of normalized vectors
-
-#### 7. Visualization and Analysis Tools
+Binding orientation vectors were calculated as centroids of interface residues
+Angle between binding orientations was computed using dot product of normalized vectors
 
 **PyMOL Scripts:**
-- `electrostatics_hydrophobic.pml`: Chemical patch visualization
-- `visualize_bfactors.pml`: Flexibility mapping
-- Structural superposition and alignment visualization
+`electrostatics_hydrophobic.pml`: Chemical patch visualization
+`visualize_bfactors.pml`: Flexibility mapping
 
 **Python Analysis Pipeline:**
-- Custom scripts for contact detection, interaction analysis, and statistical calculations
-- NumPy and SciPy for numerical computations and structural superposition
-- Pandas for data manipulation and CSV generation
-
-#### 8. Antibody Sequence Analysis
+Custom scripts for contact detection, interaction analysis, and statistical calculations
+NumPy and SciPy for numerical computations and structural superposition
+Pandas for data manipulation and CSV generation
 
 **Sequence Extraction:**
-- Heavy and light chain sequences extracted using `extract_antibody_sequences.py`
-- Sequences saved to `heavy.fasta` and `light.fasta` for ANARCI numbering
-- HCDR3 length analysis performed (12 residues, within polyreactive range)
+Heavy and light chain sequences extracted using `extract_antibody_sequences.py`
+Sequences saved to `heavy.fasta` and `light.fasta` for ANARCI numbering
+HCDR3 length analysis performed (12 residues, within polyreactive range)
 
-### Software and Dependencies
+### Dependencies
 
 **Core Software:**
-- FoldX 4.1 (alanine scanning and energy calculations)
-- PyMOL (molecular visualization and analysis)
-- Python 3.9+ (data analysis and processing)
+FoldX 4.1 (alanine scanning and energy calculations)
+PyMOL (molecular visualization and analysis)
+Python 3.9+ (data analysis and processing)
 
 **Python Libraries:**
-- NumPy 2.0.2 (numerical computations)
-- SciPy 1.13.1 (structural superposition and advanced mathematics)
-- Pandas (data manipulation)
+NumPy 2.0.2 (numerical computations)
+SciPy 1.13.1 (structural superposition and advanced mathematics)
+Pandas (data manipulation)
 
 ### Statistical Methods
 
 **Multiple Testing:**
-- 5 independent FoldX runs were performed for alanine scanning to ensure reproducibility
-- B-factor analysis was performed on both complexes independently
+5 independent FoldX runs were performed for alanine scanning to ensure reproducibility
+B-factor analysis was performed on both complexes independently
 
 **Thresholds and Classifications:**
-- Contact cutoff: 5.0 Å (heavy atoms)
-- High flexibility threshold: B-factor > 50 Ų
-- Conserved hotspot threshold: ΔΔG > 1.0 kcal/mol
-- Differential residue threshold: ΔΔG difference > 2.0 kcal/mol
-- Polyreactive signature thresholds: >25% aromatic, >50% hydrophobic
-
-**Quality Control:**
-- All structural analyses were validated by manual inspection in PyMOL
-- Contact detection was verified by distance measurements
-- FoldX results were checked for convergence across multiple runs
-
-### Data Availability
-
-All analysis scripts, input structures, and output data files are available in the `/Users/aloksinha/Desktop/Polyreactive/` directory, including:
-- Input PDB structures (CL1-Ab4_p53.pdb, CL1-Ab4_CALR.pdb)
-- Analysis scripts (Python and PyMOL)
-- Output CSV files with quantitative results
-- Visualization scripts and session files
+Contact cutoff: 5.0 Å (heavy atoms)
+High flexibility threshold: B-factor > 50 Ų
+Conserved hotspot threshold: ΔΔG > 1.0 kcal/mol
+Differential residue threshold: ΔΔG difference > 2.0 kcal/mol
+Polyreactive signature thresholds: >25% aromatic, >50% hydrophobic
 
 ---
-
-## Executive Summary
-
-CL1-Ab4 achieves polyreactivity through a **"generalist paratope"** mechanism combining:
-
-1. **Extreme flexibility** (B-factors >70 Ų) enabling induced-fit binding
-2. **Aromatic/hydrophobic enrichment** (56.5% hydrophobic, 34.8% aromatic)
-3. **Distributed energetics** (9 hotspots, no dominant driver)
-4. **Chemical versatility** (Tyr-rich, dual H-bond/hydrophobic capability)
-5. **Adaptable binding modes** (58° orientation difference between antigens)
-
-**This architecture is characteristic of known polyreactive antibodies and distinct from monospecific antibodies.**
-
----
-
-## 1. FoldX Alanine Scanning Results
+## FoldX Alanine Scanning Results
 
 ### Conserved Energetic Hotspots (ΔΔG > 1 kcal/mol, similar for both antigens)
 
@@ -205,7 +159,7 @@ CL1-Ab4 achieves polyreactivity through a **"generalist paratope"** mechanism co
 
 ---
 
-## 2. Chemical Composition Analysis
+## Chemical Composition Analysis
 
 ### Conserved Interface (23 residues binding both antigens)
 
@@ -231,7 +185,7 @@ CL1-Ab4 achieves polyreactivity through a **"generalist paratope"** mechanism co
 
 ---
 
-## 3. Flexibility Analysis (B-factors)
+## Flexibility Analysis (B-factors)
 
 ### Conserved Interface Statistics:
 
@@ -249,12 +203,9 @@ CL1-Ab4 achieves polyreactivity through a **"generalist paratope"** mechanism co
 | Monospecific | <50 Ų | - |
 | Germline | 50-70 Ų | - |
 
-### Key Finding:
-**Extreme paratope flexibility** (93.5% highly mobile residues) → **conformational promiscuity** allows adaptation to structurally distinct epitopes.
-
 ---
 
-## 4. Binding Mode Comparison (Corrected with Proper Alignment)
+## Binding Mode Comparison (Corrected with Proper Alignment)
 
 ### Structural Metrics (After Antibody Superposition):
 
@@ -270,12 +221,9 @@ CL1-Ab4 achieves polyreactivity through a **"generalist paratope"** mechanism co
 | **p53 epitope Rg** | 10.58 Å | Similar spatial extent |
 | **CALR epitope Rg** | 9.32 Å | Similar spatial extent |
 
-### Key Finding:
-**Substantial conformational adaptation** (RMSD ~7.7 Å) combined with **different binding orientations** (76.3° angle) → **induced-fit flexibility** enables the same paratope residues to engage antigens through different conformations and orientations.
-
 ---
 
-## 5. Interaction Network Analysis
+## Interaction Network Analysis
 
 ### Conserved Paratope: 23 Residues
 
@@ -296,193 +244,3 @@ CL1-Ab4 achieves polyreactivity through a **"generalist paratope"** mechanism co
 - **Hydrophobic contacts**: Val, Ile, Leu, Pro → shape-driven packing
 
 ---
-
-## 6. HCDR3 Length Analysis
-
-**HCDR3 span:** A99-A110 (~12 residues)
-
-**Literature correlation:**
-- Short HCDR3 (<10 aa): monospecific antibodies
-- **Long HCDR3 (>10 aa): polyreactive antibodies** ✓
-- Very long HCDR3 (>20 aa): autoreactive antibodies
-
-**CL1-Ab4 HCDR3:** 12 residues → **in polyreactive range** ✓
-
----
-
-## 7. Mechanistic Model
-
-### Polyreactivity Achieved Through:
-
-#### A. **Induced-Fit Flexibility** ⭐ **PRIMARY MECHANISM**
-- **74.75 Ų average B-factor** → highly mobile paratope
-- **7.7 Å RMSD between complexes** → substantial conformational adaptation
-- CDR loops (esp. HCDR3) can rearrange dynamically for each antigen
-
-#### B. **Chemical Promiscuity**
-- **34.8% aromatic, 56.5% hydrophobic** → versatile interaction modes
-- Tyrosines provide dual capability: H-bonds OR π-stacking
-- Histidines provide pH-dependent chemistry
-- Hydrophobic patch accommodates diverse nonpolar surfaces
-
-#### C. **Distributed Energetics**
-- **9 hotspots** with ΔΔG 1-3 kcal/mol (no single dominant)
-- Multiple weak contacts sum to functional affinity
-- No strict lock-and-key requirement
-
-#### D. **Orientational Versatility**
-- **76.3° binding angle difference** between antigens (corrected)
-- Same paratope residues used in substantially different spatial arrangements
-- Conformational flexibility enables orientational diversity
-
----
-
-## 8. Comparison to Known Polyreactive Antibodies
-
-| Feature | CL1-Ab4 | Known Polyreactive | Known Monospecific |
-|---------|---------|-------------------|-------------------|
-| Aromatic % | **34.8%** | >25% ✓ | <20% |
-| Hydrophobic % | **56.5%** | >50% ✓ | ~40% |
-| Mean B-factor | **74.75 Ų** | >60 ✓ | <50 |
-| HCDR3 length | **12 aa** | >10 ✓ | <10 |
-| Tyr enrichment | **17.4%** | High ✓ | Low |
-| Hotspot count | **9 distributed** | Many ✓ | 1-3 focused |
-| Binding mode | **Induced-fit** | Induced-fit ✓ | Lock-and-key |
-
-**Conclusion:** CL1-Ab4 shows **all major hallmarks** of polyreactive antibodies.
-
----
-
-## 9. Experimental Validation Recommendations
-
-### Tier 1: Core Generalist Residues (test polyreactivity mechanism)
-1. **A104V→A** - hydrophobic core driver (ΔΔG avg = 3.30)
-2. **A99Q→A** - H-bond contributor (ΔΔG avg = 2.50)
-3. **A101L→A** - hydrophobic packing (ΔΔG avg = 2.49)
-
-**Prediction:** Loss of binding to **both** p53 and CALR
-
-### Tier 2: Aromatic Promiscuity (test chemical versatility hypothesis)
-4. **A32Y→F** - keep aromatic, remove H-bond (ΔΔG p53 = 1.77)
-5. **A33W→A** - remove large aromatic (ΔΔG avg = 4.27)
-6. **A32Y→A** - full removal (ΔΔG diff = 2.50)
-
-**Prediction:** Partial loss for both, confirms aromatic versatility
-
-### Tier 3: Antigen-Specific (test differential contributions)
-7. **A52L→A** - p53-specific (ΔΔG diff = 4.61)
-8. **A30T→A** - CALR-specific (ΔΔG diff = 4.05)
-
-**Prediction:** Selective loss of one antigen, confirms dual mode
-
-### Assays:
-- **SPR/BLI**: quantitative ΔΔG measurement
-- **ELISA**: binary binding readout
-- **ITC**: thermodynamic signature (entropy vs enthalpy driven?)
-
----
-
-## 10. Files Generated
-
-### Quantitative Analysis:
-1. **`foldx_ddg_analysis.csv`** - Alanine scanning ΔΔG values
-2. **`paratope_chemistry_map.csv`** - Per-residue chemical properties
-3. **`bfactors_p53.csv`** & **`bfactors_calr.csv`** - Flexibility data
-4. **`binding_mode_comparison.csv`** - Structural comparison metrics
-5. **`interaction_overlap_by_ab_residue.csv`** - Interaction types per residue
-6. **`conserved_paratope.csv`** - 23 residues binding both antigens
-
-### Visualization Scripts (PyMOL):
-7. **`cl1ab4_binding_superposition.pml`** - Structural alignment
-8. **`electrostatics_hydrophobic.pml`** - Chemical patch visualization
-9. **`visualize_bfactors.pml`** - Flexibility mapping
-
-### Sequence Files:
-10. **`heavy.fasta`** & **`light.fasta`** - For ANARCI numbering
-
-### Electrostatics Setup:
-11. **`CL1-Ab4_antibody_from_p53.pdb`** - Antibody-only structure
-12. **`apbs_antibody.in`** - APBS configuration
-
-### Reports:
-13. **`polyreactivity_summary_report.md`** - Detailed findings
-14. **`FINAL_ANALYSIS_SUMMARY.md`** - This comprehensive summary
-
----
-
-## 11. Key Conclusions
-
-### Why is CL1-Ab4 polyreactive?
-
-**Primary answer:** CL1-Ab4 uses an **induced-fit flexible paratope** with:
-
-1. **Extreme flexibility** (B-factor 74.75 Ų) allowing conformational adaptation
-2. **Substantial conformational change** (RMSD 7.7 Å) between antigen complexes
-3. **Aromatic/hydrophobic patch** (34.8%/56.5%) enabling versatile chemistry
-4. **Tyrosine enrichment** (17.4%) providing dual H-bond/π-stacking capability
-5. **Distributed energetics** (9 hotspots) avoiding strict shape complementarity
-6. **Long HCDR3** (12 aa) contributing conformational diversity
-7. **Orientational versatility** (76.3° binding angle difference, corrected)
-
-### Structural Basis:
-
-**Induced-fit conformational adaptation** (7.7 Å RMSD, high B-factors) **+** **Chemical promiscuity** (aromatic/hydrophobic patch) **+** **Orientational flexibility** (76° angle difference) **=** **Polyreactivity**
-
-### This mechanism is:
-- ✓ Consistent with known polyreactive antibodies
-- ✓ Distinct from monospecific antibodies (which use lock-and-key)
-- ✓ Testable via mutagenesis (9 mutations recommended)
-
----
-
-## 12. Future Directions
-
-### To further validate:
-
-1. **Molecular Dynamics (MD)**
-   - 50-100 ns simulation of antibody alone
-   - Quantify CDR flexibility (RMSF)
-   - Identify alternative conformations
-
-2. **APBS Electrostatics**
-   - Map charge distribution on paratope
-   - Identify electropositive/negative patches
-   - Correlate with binding partners
-
-3. **Cross-Docking**
-   - Computationally dock both antigens to antibody
-   - Generate ensemble of binding poses
-   - Confirm orientational diversity
-
-4. **Germline Reversion**
-   - Compare to germline antibody sequence
-   - Identify somatic mutations driving polyreactivity
-   - Test germline for specificity
-
-5. **Additional Antigens**
-   - Test binding to other proteins (DNA, lipids, etc.)
-   - Map promiscuity spectrum
-   - Define limits of recognition
-
----
-
-## 13. Technical Notes
-
-**Software Used:**
-- FoldX 4.1 (alanine scanning)
-- PyMOL (visualization)
-- Python 3 (data analysis)
-- NumPy (calculations)
-
-**Structures:**
-- CL1-Ab4_p53.pdb (antibody-p53 complex)
-- CL1-Ab4_CALR.pdb (antibody-CALR complex)
-
-**Analysis completed:** October 7, 2025
-
----
-
-**END OF REPORT**
-
-*For questions or follow-up analysis, refer to individual CSV files and PyMOL scripts in `/Users/aloksinha/Desktop/`.*
-
